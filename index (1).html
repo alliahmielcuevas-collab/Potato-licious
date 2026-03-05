@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potato-licious - Gourmet Jacket Potatoes</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet"> 
+    <style>
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #FAE5D3;
+            color: #333;
+            text-align: center;
+        }
+        .navbar {
+            background: #8B4513;
+            padding: 10px 0; 
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px; 
+            font-weight: 600; 
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            color: #F5F5DC;
+        }
+        .hero {
+            background-image: url('https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/baked_potatoes.jpg'); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 42px;
+            font-weight: bold;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+            padding: 20px; 
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .hero .cta {
+            background-color: #FF5733;
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .menu-item {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .menu-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .menu-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .menu-item button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+            width: 100%;
+        }
+        .menu-item button:hover {
+            background-color: #a0522d;
+        }
+        .cart {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff3e0;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .custom-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .custom-option {
+            background: #ffcc80;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 160px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .custom-option:hover {
+            background: #8B4513;
+            color: white;
+        }
+        .checkout-form input, .checkout-form select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .checkout-btn {
+            background: #8B4513;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .footer {
+            background: #8B4513;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        /* About Us Page Styles */
+        #about {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        #about h2 {
+            color: #8B4513;
+        }
+        #about p {
+            line-height: 1.6;
+            text-align: justify;
+        }
+    </style>
+    <script>
+        let cart = [];
+        const deliveryFee = 68;
+        let selectedIngredients = [];
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            updateCart();
+        }
+        function updateCart() {
+            let cartContainer = document.getElementById("cart");
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<h2>Cart</h2><p>Your cart is empty</p>";
+                return;
+            }
+            let total = cart.reduce((sum, item) => sum + item.price, 0) + deliveryFee;
+            let cartItems = cart.map((item, index) => <li>${item.item} - ₱${item.price} <button onclick="removeFromCart(${index})">Remove</button></li>).join('');
+            cartContainer.innerHTML = `
+                <h2>Cart</h2>
+                <ul>${cartItems}</ul>
+                <p>Delivery Fee: ₱${deliveryFee}</p>
+                <h3>Total: ₱${total}</h3>
+                <button class="checkout-btn" onclick="showCheckout()">Proceed to Checkout</button>
+            `;
+        }
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        function showCheckout() {
+            document.getElementById("checkout").style.display = "block";
+        }
+        function processOrder() {
+            alert("Your order has been placed successfully!");
+            cart = [];
+            updateCart();
+            document.getElementById("checkout").style.display = "none";
+        }
+        function toggleIngredient(ingredient) {
+            if (selectedIngredients.includes(ingredient)) {
+                selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
+            } else {
+                selectedIngredients.push(ingredient);
+            }
+            updateCustomPotato();
+        }
+        function updateCustomPotato() {
+            let ingredientText = selectedIngredients.length ? selectedIngredients.join(", ") : "No ingredients selected";
+            document.getElementById("customPotatoText").innerText = ingredientText;
+        }
+        function addCustomPotato() {
+            if (selectedIngredients.length === 0) {
+                alert("Please select at least one ingredient.");
+                return;
+            }
+            let customPotatoName = Custom Potato (${selectedIngredients.join(", ")});
+            addToCart(customPotatoName, 220);
+            selectedIngredients = [];
+            updateCustomPotato();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_135201.png" alt="Potato-licious Logo" class="logo">
+    </header>
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#custom">Your Potato, Your Choice!</a>
+        <a href="#cart">Cart</a>
+        <a href="#about">About Us</a>
+    </div>
+    <div class="hero" id="home">
+        <h1>Welcome to Potato-licious </h1>
+        <p>Gourmet Potatoes, Delivered to your door </p>
+        <a href="#menu" class="cta">Order Now</a>
+    </div>
+    <div class="container">
+        <div id="menu" class="section">
+            <h2>Menu</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_181707.png" alt="Classic Butter & Cheese">
+                    <h3>Classic Butter & Cheese</h3>
+                    <p>₱150</p>
+                    <button onclick="addToCart('Classic Butter & Cheese', 150)">Add to Cart</button>
+                </div>
+                <div class="menu-item">
+                    <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_131617.png" alt="Bacon & Cheddar">
+                    <h3>Bacon & Cheddar</h3>
+                    <p>₱180</p>
+                    <button onclick="addToCart('Bacon & Cheddar', 180)">Add to Cart</button>
+                </div>
+                <div class="menu-item">
+                    <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_143008.png" alt="Loaded Veggie">
+                    <h3>Loaded Veggie</h3>
+                    <p>₱165</p>
+                    <button onclick="addToCart('Loaded Veggie', 165)">Add to Cart</button>
+                </div>
+                <div class="menu-item">
+                    <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_212714.png" alt="Iced Tea">
+                    <h3>Iced Tea</h3>
+                    <p>₱50</p>
+                    <button onclick="addToCart('Iced Tea', 50)">Add to Cart</button>
+                </div>
+                <div class="menu-item">
+                    <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_212702.png" alt="Coke">
+                    <h3>Coke</h3>
+                    <p>₱45</p>
+                    <button onclick="addToCart('Coke', 45)">Add to Cart</button>
+                </div>
+                <div class="menu-item">
+                    <img src="https://assets.onecompiler.app/43d8vmq6g/43dbgxwuc/IMG_20250330_212650.png" alt="Sprite">
+                    <h3>Sprite</h3>
+                    <p>₱45</p>
+                    <button onclick="addToCart('Sprite', 45)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        <div id="custom" class="section">
+            <h2>Your Potato, Your Choice!</h2>
+            <p>Select your favorite ingredients:</p>
+            <div class="custom-container">
+                <div class="custom-option" onclick="toggleIngredient('Cheese')">Cheese</div>
+                <div class="custom-option" onclick="toggleIngredient('Bacon')">Bacon</div>
+                <div class="custom-option" onclick="toggleIngredient('Sour Cream')">Sour Cream</div>
+                <div class="custom-option" onclick="toggleIngredient('Mushrooms')">Mushrooms</div>
+                <div class="custom-option" onclick="toggleIngredient('Salt & Pepper')">Salt & Pepper</div>
+                <div class="custom-option" onclick="toggleIngredient('Butter')">Butter</div>
+                <div class="custom-option" onclick="toggleIngredient('Garlic Butter')">Garlic Butter</div>
+                <div class="custom-option" onclick="toggleIngredient('Chives')">Chives</div>
+                <div class="custom-option" onclick="toggleIngredient('Salsa')">Salsa</div>
+                <div class="custom-option" onclick="toggleIngredient('Jalapenos')">Jalapenos</div>
+            </div>
+            <p><strong>Selected Ingredients:</strong> <span id="customPotatoText">No ingredients selected</span></p>
+            <button class="checkout-btn" onclick="addCustomPotato()">Add Custom Potato - ₱220</button>
+        </div>
+        <div id="cart" class="cart">
+            <h2>Cart</h2>
+            <p>Your cart is empty</p>
+        </div>
+        <div id="checkout" class="section" style="display: none;">
+            <h2>Checkout</h2>
+            <form class="checkout-form">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" required><br>
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" required><br>
+                <label for="contact">Contact Number:</label><br>
+                <input type="tel" id="contact" name="contact" required><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+                <div class="payment-method">
+                    <h3>Payment Method:</h3>
+                    <input type="radio" id="gcash" name="payment" value="gcash" checked>
+                    <label for="gcash">GCash</label><br>
+                    <input type="radio" id="cash" name="payment" value="cash">
+                    <label for="cash">Cash on Delivery</label><br>
+                    <input type="radio" id="credit" name="payment" value="credit">
+                    <label for="credit">Credit Card</label><br>
+                </div>
+                <button type="button" class="checkout-btn" onclick="processOrder()">Place Order</button>
+            </form>
+        </div>
+        <div id="about" class="section">
+            <h2>About Us</h2>
+            <p>At Potato-licious, we're passionate about bringing you the most delicious and satisfying gourmet jacket potatoes. We use only the freshest ingredients and hand-craft each potato to perfection. Our mission is to provide you with a tasty and convenient meal option that you can enjoy any time of day.</p>
+            <p>We believe that everyone deserves to enjoy a delicious and satisfying meal, whether it's a quick lunch break or a relaxing evening at home. That's why we offer a wide variety of potato options to choose from, including classic favorites and our signature custom potato creations.</p>
+            <p>We're committed to providing excellent customer service and ensuring that your experience with Potato-licious is enjoyable from start to finish. Thank you for choosing us!</p>
+        </div>
+    </div>
+    <div class="footer">📞 Contact us: aa.cvs@gmail.com</div>
+    <div class="footer"> 099-544-470-18 or fb: Potato-licious!</div>
+</body>
+</html>
